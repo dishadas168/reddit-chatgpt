@@ -1,7 +1,7 @@
-# ChatGPT Telegram Bot: **GPT-4. Fast. No daily limits. Special chat modes**
+# Reddit ChatGPT Bot for Telegram Bot: Chat with your favourite Reddit posts**
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/karfly/chatgpt_telegram_bot/main/static/header.png" align="center" style="width: 100%" />
+
 </div>
 
 <br>
@@ -40,17 +40,6 @@ You can deploy your own bot, or use mine: [@chatgpt_karfly_bot](https://t.me/cha
 
 ---
 
-## 🤑 Payments
-[My bot](https://t.me/chatgpt_karfly_bot) supports many payments providers:
-- 💎 Crypto
-- [Stripe](https://stripe.com)
-- [Smart Glocal](https://smart-glocal.com)
-- [Unlimint](https://www.unlimint.com)
-- [ЮMoney](https://yoomoney.ru)
-- and [many-many other](https://core.telegram.org/bots/payments#supported-payment-providers)
-
-If you want to add payments to your bot and create profitable business – write me on Telegram ([@karfly](https://t.me/karfly)).
-
 ## News
 - *21 Apr 2023*:
     - DALLE 2 support
@@ -86,32 +75,4 @@ If you want to add payments to your bot and create profitable business – write
     ```bash
     docker-compose --env-file config/config.env up --build
     ```
-
-## ❤️ Top donations
-You can be in this list: <a href="https://github.com/karfly/chatgpt_telegram_bot/blob/main/static/donate/donate.md#%EF%B8%8F-donate" alt="Donate shield"><img src="https://img.shields.io/badge/-Donate-red?logo=undertale" /></a>
-
-1. [LilRocco](https://t.me/LilRocco). Donation: **1000$** (!!!)
-
-2. [Mr V](https://t.me/mr_v_v_v). Donation **250$**
-
-3. [unexpectedsunday](https://t.me/unexpectedsunday). Donation: **150$**
-
-4. [Sem](https://t.me/sembrestels). Donation: **100$**
-
-5. [Ryo](https://t.me/ryokihara). Donation: **80$**
-
-6. [Ilias Ism](https://twitter.com/illyism). Donation: **69$**
-
-    *Message:* I wanted to thank you for your amazing code! It helped me start my own Telegram ChatGPT bot and add a bunch of cool features. I really appreciate your hard work on this project. For anyone interested in trying my bot, feel free to check it out here: [magicbuddy.chat](https://magicbuddy.chat) 🤖 Thanks again! 😊
-
-7. [Sebastian](https://t.me/dell1503). Donation: **55$**
-
-8. [Alexander Zimin](https://t.me/azimin). Donation: **50$**
-
-9. [Kbaji20](https://t.me/Kbaji20). Donation: **30$**
-
-10. [Hans Blinken](https://t.me/hblink). Donation: **10$**
-
-## References
-1. [*Build ChatGPT from GPT-3*](https://learnprompting.org/docs/applied_prompting/build_chatgpt)
 # reddit-chatgpt-telegram-bot
