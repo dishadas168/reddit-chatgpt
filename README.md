@@ -13,14 +13,14 @@ Are you tired of sifting through endless Reddit posts and comment sections in se
 
 
 <div style="display: flex; justify-content: space-between;">
-   <img src="./images/Screenshot_20230905-123953.png" alt="img1" width="300">
-   <img src="./images/Screenshot_20230905-123958.png" alt="img2" width="300">
-   <img src="./images/Screenshot_20230905-124023.png" alt="img3" width="300">
+   <img src="./images/Screenshot_20230905-123953.png" alt="img1" width="250">
+   <img src="./images/Screenshot_20230905-123958.png" alt="img2" width="250">
+   <img src="./images/Screenshot_20230905-124023.png" alt="img3" width="250">
 </div>
 <div style="display: flex; justify-content: space-between;">
-   <img src="./images/Screenshot_20230905-124028.png" alt="img4" width="300">
-   <img src="./images/Screenshot_20230905-124033.png" alt="img5" width="300">
-   <img src="./images/Screenshot_20230905-124038.png" alt="img6" width="300">
+   <img src="./images/Screenshot_20230905-124028.png" alt="img4" width="250">
+   <img src="./images/Screenshot_20230905-124033.png" alt="img5" width="250">
+   <img src="./images/Screenshot_20230905-124038.png" alt="img6" width="250">
 </div>
 
 ## News 🌠
