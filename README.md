@@ -9,6 +9,20 @@ Are you tired of sifting through endless Reddit posts and comment sections in se
 - **Two Unique Chat Modes:** Take your pick between the "General Assistant" mode for those enlightening knowledge sessions or the "QA" mode to dive into Reddit posts directly.
 - **Reddit Post Summaries:** Enter a Reddit URL, and watch as our bot works its magic to serve you a concise summary of the entire post.
 
+<br>
+
+
+<div style="display: flex; justify-content: space-between;">
+   <img src="./images/Screenshot_20230905-123953.png" alt="img1" width="300">
+   <img src="./images/Screenshot_20230905-123958.png" alt="img2" width="300">
+   <img src="./images/Screenshot_20230905-124023.png" alt="img3" width="300">
+</div>
+<div style="display: flex; justify-content: space-between;">
+   <img src="./images/Screenshot_20230905-124028.png" alt="img4" width="300">
+   <img src="./images/Screenshot_20230905-124033.png" alt="img5" width="300">
+   <img src="./images/Screenshot_20230905-124038.png" alt="img6" width="300">
+</div>
+
 ## News 🌠
 
 ## Powered By ⚙️
