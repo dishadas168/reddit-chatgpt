@@ -40,14 +40,15 @@ Are you tired of sifting through endless Reddit posts and comment sections in se
 
 ## Setup in a Snap 🚀
 1. Grab your OpenAI API key.
-2. Fetch your Telegram bot token from @BotFather.
-3. Edit `config/config.example.yml` with your tokens.
-4. Execute the commands below:
+2. Get your Pinecone API key.
+3. Fetch your Telegram bot token from @BotFather.
+4. Edit `config/config.example.yml` with your tokens.
+5. Execute the commands below:
 
    ```bash
    mv config/config.example.yml config/config.yml
    mv config/config.example.env config/config.env
-5. 🔥 And now **run**:
+6. 🔥 And now **run**:
     ```bash
     docker-compose --env-file config/config.env up --build
     ```
