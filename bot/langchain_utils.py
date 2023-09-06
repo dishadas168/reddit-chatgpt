@@ -48,13 +48,9 @@ openai.api_key = config.openai_api_key
 if config.openai_api_base is not None:
     openai.api_base = config.openai_api_base
 
-YOUR_API_KEY = '70680f97-52fd-48ff-b0c5-138a0bdc38af' #@param {type:"string"}
-# find ENV (cloud region) next to API key in console
-YOUR_ENV = 'gcp-starter' #@param {type:"string"}
-
 pinecone.init(
-    api_key=YOUR_API_KEY,
-    environment=YOUR_ENV
+    api_key= config.pinecone_api_key,
+    environment= config.pinecone_env
 )
 
 OPENAI_COMPLETION_OPTIONS = {
