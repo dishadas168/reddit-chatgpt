@@ -5,8 +5,6 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ChatMessageHistory
 from langchain.chains import ConversationalRetrievalChain
-from decouple import config
-import http
 from reddit_utils import is_reddit_url
 import scraper
 import config
@@ -39,11 +37,11 @@ prompt = PromptTemplate(
     AI:"""
 )
 
-openai.api_key = config.openai_api_key
+# openai.api_key = config.openai_api_key
 
 llm = ChatOpenAI(
     model_name='gpt-3.5-turbo',
-    openai_api_key=openai.api_key
+    openai_api_key= config.openai_api_key
     )
 
 memory= ConversationBufferWindowMemory(memory_key="chat_history", k=5 )
