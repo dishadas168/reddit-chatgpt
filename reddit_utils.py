@@ -5,16 +5,11 @@ from typing import Any, Callable, List, Optional, Tuple
 from data_types import RedditData, GenerateSettings
 import logging
 import validators
+import config
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
-REDDIT_CLIENT_ID="sIRokWG0vVggXVsw7r29pA"
-REDDIT_CLIENT_SECRET="onoYyR-uUhdIZoo457p68_Mbeoh9xA"
-REDDIT_USERNAME="Witty_veterinarian54"
-REDDIT_PASSWORD="Shinigami1!@"
-REDDIT_USER_AGENT='linux:com.youragent.reddit-gpt-summarizer:v1.0.0 (by /u/Witty_veterinarian54)'
-MAX_BODY_TOKEN_SIZE=500
 
 def is_reddit_url(url : str) -> bool :
     """
@@ -81,11 +76,11 @@ def get_reddit_praw(
 
 
         reddit = praw.Reddit(
-            client_id=REDDIT_CLIENT_ID,
-            client_secret=REDDIT_CLIENT_SECRET,
-            password=REDDIT_PASSWORD,
-            user_agent=REDDIT_USER_AGENT,
-            username=REDDIT_USERNAME
+            client_id=config.reddit_client_id,
+            client_secret=config.reddit_client_secret,
+            password=config.reddit_password,
+            user_agent=config.reddit_user_agent,
+            username=config.reddit_username
         )
 
         submission: Any = reddit.submission(url=json_url)  # type: ignore

@@ -5,11 +5,8 @@ import pinecone
 from datetime import datetime
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
-from decouple import config
+import config
 import pandas as pd
-
-
-
 
 
 query_text = f"(Todays Date: {datetime.now().strftime('%Y-%b-%d')}) Revise and summarize"\
@@ -39,8 +36,8 @@ def generate_prompt_for_thread(url):
     prompts: List[str] = []
 
     pinecone.init(
-        api_key= config("PINECONE_API_KEY"),
-        environment= config("PINECONE_ENV")
+        api_key= config.pinecone_api_key,
+        environment= config.pinecone_env
     )
     index_name = "reddit-chatgpt-db"
 
@@ -130,7 +127,7 @@ def generate_prompt_for_thread(url):
 
         embed = OpenAIEmbeddings(
             model='text-embedding-ada-002',
-            openai_api_key=config("OPENAI_API_KEY")
+            openai_api_key=config.openai_api_key
         )
         # create document embeddings
         embeds = embed.embed_documents(documents)

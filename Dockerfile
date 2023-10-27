@@ -1,23 +1,21 @@
-FROM python:3.8-slim
+FROM python:3.10.0-slim
 
-RUN \
-    set -eux; \
-    apt-get update; \
-    DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
-    python3-pip \
-    build-essential \
-    python3-venv \
-    ffmpeg \
-    git \
-    ; \
-    rm -rf /var/lib/apt/lists/*
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip3 install -U pip && pip3 install -U wheel && pip3 install -U setuptools==59.5.0
-COPY ./requirements.txt /tmp/requirements.txt
-RUN pip3 install -r /tmp/requirements.txt && rm -r /tmp/requirements.txt
+# Install dependencies:
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-COPY . /code
-WORKDIR /code
+# Run the application:
+COPY . app/
+EXPOSE 8501
 
-CMD ["bash"]
+WORKDIR /app
+
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run"]
+CMD ["app.py"]
 
