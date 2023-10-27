@@ -1,6 +1,16 @@
 import reddit_utils
 import llm_utils
+from uuid import uuid4
+import pinecone
 from datetime import datetime
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import Pinecone
+from decouple import config
+import pandas as pd
+
+
+
+
 
 query_text = f"(Todays Date: {datetime.now().strftime('%Y-%b-%d')}) Revise and summarize"\
             " the article in 250 words or less by incorporating relevant information from the comments."\
@@ -27,12 +37,20 @@ def generate_prompt_for_thread(url):
     reddit_data = reddit_utils.get_reddit_praw(url)
 
     prompts: List[str] = []
-    # pinecone.delete_index(self.index_name)
-    # pinecone.create_index(
-    #     name=self.index_name,
-    #     metric='dotproduct',
-    #     dimension=1536  # 1536 dim of text-embedding-ada-002
-    # )
+
+    pinecone.init(
+        api_key= config("PINECONE_API_KEY"),
+        environment= config("PINECONE_ENV")
+    )
+    index_name = "reddit-chatgpt-db"
+
+    if index_name in pinecone.list_indexes():
+        pinecone.delete_index(index_name)
+    pinecone.create_index(
+        name=index_name,
+        metric='dotproduct',
+        dimension=1536  # 1536 dim of text-embedding-ada-002
+    )
 
     title, selftext, subreddit, comments = (
         reddit_data["title"],
@@ -80,53 +98,57 @@ def generate_prompt_for_thread(url):
         prompts.append(complete_prompt)
 
     #################################################################################3
-    # grouped_data = llm_utils.group_bodies_into_chunks(complete_prompt, 2000)
-    # data = pd.DataFrame(grouped_data, columns=['context'])
-    # data['name'] = subreddit
+    grouped_data = llm_utils.group_bodies_into_chunks(complete_prompt, 2000)
+    data = pd.DataFrame(grouped_data, columns=['context'])
+    data['name'] = subreddit
     # data['user_id'] = user_id
-    # data['uuid'] = [uuid4() for _ in range(len(data.index))]
-    # data.drop_duplicates(subset='context', keep='first', inplace=True)
+    data['uuid'] = [uuid4() for _ in range(len(data.index))]
+    data.drop_duplicates(subset='context', keep='first', inplace=True)
 
-    # self.index = pinecone.GRPCIndex(self.index_name)
+    index = pinecone.GRPCIndex(index_name)
 
-    # # Reset index and ensure 'index' column is added
-    # data = data.reset_index(drop=True)
-    # data = data.reset_index()
-    # batch_size = 100
+    # Reset index and ensure 'index' column is added
+    data = data.reset_index(drop=True)
+    data = data.reset_index()
+    batch_size = 100
 
-    # for i in range(0, len(data), batch_size):
-    #     # get end of batch
-    #     i_end = min(len(data), i+batch_size)
-    #     batch = data.iloc[i:i_end]
+    for i in range(0, len(data), batch_size):
+        # get end of batch
+        i_end = min(len(data), i+batch_size)
+        batch = data.iloc[i:i_end]
 
-    #     # first get metadata fields for this record
-    #     metadatas = [{
-    #     self.text_field : record[1],  # 'text' will contain the same data as 'context'
-    #     'name': record[2],
-    #     'user_id': record[3]
-    #     } for record in batch.itertuples(index=False)]
+        # first get metadata fields for this record
+        metadatas = [{
+        'text' : record[1],  # 'text' will contain the same data as 'context'
+        'name': record[2]
+        # 'user_id': record[3]
+        } for record in batch.itertuples(index=False)]
 
-    #     # print(metadatas)
-    #     # get the list of contexts / documents
-    #     documents = batch['context'].tolist()
+        # print(metadatas)
+        # get the list of contexts / documents
+        documents = batch['context'].tolist()
 
-    #     # create document embeddings
-    #     embeds = self.embed.embed_documents(documents)
+        embed = OpenAIEmbeddings(
+            model='text-embedding-ada-002',
+            openai_api_key=config("OPENAI_API_KEY")
+        )
+        # create document embeddings
+        embeds = embed.embed_documents(documents)
 
-    #     # get IDs and convert them to strings
-    #     ids = batch['uuid'].astype(str).tolist()
+        # get IDs and convert them to strings
+        ids = batch['uuid'].astype(str).tolist()
 
-    #     # add everything to pinecone
-    #     self.index.upsert(vectors=list(zip(ids, embeds, metadatas)))
+        # add everything to pinecone
+        index.upsert(vectors=list(zip(ids, embeds, metadatas)))
 
-    # # switch back to normal index for langchain
-    # self.index = pinecone.Index(self.index_name)
+    # switch back to normal index for langchain
+    index = pinecone.Index(index_name)
 
-    # self.vectorstore = Pinecone(
-    #     self.index, self.embed.embed_query, self.text_field
-    # )
+    vectorstore = Pinecone(
+        index, embed.embed_query, 'text'
+    )
 
     ##################################################################################
 
 
-    return [{"role": "system", "content": complete_prompt}]
+    return [{"role": "system", "content": complete_prompt}], vectorstore

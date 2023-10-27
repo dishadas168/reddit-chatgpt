@@ -4,6 +4,7 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ChatMessageHistory
+from langchain.chains import ConversationalRetrievalChain
 from decouple import config
 import http
 from reddit_utils import is_reddit_url
@@ -20,7 +21,7 @@ st.title("RedditGPT")
 
 if "messages" not in st.session_state.keys():
     st.session_state["messages"] = [
-        {"role": "assistant", "content": "Hello there! Enter a reddit URL in the area above and ask away!"}
+        {"role": "assistant", "content": "Hello there! Enter a reddit URL and ask away!"}
     ]
 
 
@@ -58,21 +59,31 @@ user_prompt = st.chat_input()
 
 reddit_content= None
 if user_prompt is not None:
-    if is_reddit_url(user_prompt):        
-            messages = scraper.generate_prompt_for_thread(user_prompt)
-            reddit_content = messages[0]["content"]
+    with st.chat_message("user"):
+        st.write(user_prompt)
+    if is_reddit_url(user_prompt): 
+        with st.chat_message("assistant"): 
+            with st.spinner("Reading the Reddit post..."):      
+                messages, vectorstore = scraper.generate_prompt_for_thread(user_prompt)
+                st.session_state['vectorstore'] = vectorstore
+                reddit_content = messages[0]["content"]
+            st.write("Done reading!")
 
     user_prompt = reddit_content if reddit_content is not None else user_prompt
     st.session_state.messages.append(
         {"role" : "user", "content": user_prompt}
     )
-    with st.chat_message("user"):
-        st.write(user_prompt)
+
 
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Typing..."):
-            ai_response = llm_chain.predict(question=user_prompt)
+            if "vectorstore" in st.session_state.keys():
+                vectorstore = st.session_state["vectorstore"]
+                rqa = ConversationalRetrievalChain.from_llm(llm, vectorstore.as_retriever(), memory=memory)
+                ai_response = rqa({"question": user_prompt})["answer"]
+            else:
+                ai_response = llm_chain.predict(question=user_prompt)
             st.write(ai_response)
     new_ai_message = {"role": "assistant", "content": ai_response}
     st.session_state.messages.append(new_ai_message)
