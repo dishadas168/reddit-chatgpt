@@ -45,7 +45,8 @@ One of the unique features of the application is the ability for users to choose
 ## Getting Started
 1. OpenAI API Key:You will need an OpenAI API Key to use the GPT models. Add the key to .env.example file.
 2. Pinecone API Key: Add the Pinecone API key to .env.example file.
-3. Execute the following code to get started.
+3. Get Reddit PRAW credentials as listed in the .env.example file.
+4. Execute the following code to get started.
 ```bash
 cp .env.example .env
 docker build -t reddit-gpt .
